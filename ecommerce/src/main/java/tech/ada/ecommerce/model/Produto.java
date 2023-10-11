@@ -3,6 +3,7 @@ package tech.ada.ecommerce.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 public class Produto {
@@ -17,8 +18,17 @@ public class Produto {
     @Column(nullable = false)
     private BigDecimal preco;
 
-    @Column
+    @Column(columnDefinition = "TEXT")
     private String descricao;
+
+    @Column(unique = true, name = "SKU")
+    private String sku;
+
+    @Column(nullable = false)
+    private int qtdeEstoque;
+
+    public Produto() {
+    }
 
     public Long getId() {
         return id;
@@ -52,4 +62,32 @@ public class Produto {
         this.descricao = descricao;
     }
 
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
+    }
+
+    public int getQtdeEstoque() {
+        return qtdeEstoque;
+    }
+
+    public void setQtdeEstoque(int qtdeEstoque) {
+        this.qtdeEstoque = qtdeEstoque;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Produto produto = (Produto) o;
+        return Objects.equals(id, produto.id) && Objects.equals(sku, produto.sku);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, sku);
+    }
 }

@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 //@Getter
 //@Setter
@@ -33,6 +35,13 @@ public class Cliente implements Serializable {
 
     @Column(nullable = false)
     private String senha;
+
+//    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
+    private List<Compra> compras;
+
+    public Cliente() {
+    }
 
     public Long getId() {
         return id;
@@ -82,5 +91,24 @@ public class Cliente implements Serializable {
         this.senha = senha;
     }
 
+    public List<Compra> getCompras() {
+        return compras;
+    }
 
+    public void setCompras(List<Compra> compras) {
+        this.compras = compras;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cliente cliente = (Cliente) o;
+        return Objects.equals(id, cliente.id) && Objects.equals(cpf, cliente.cpf);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, cpf);
+    }
 }
