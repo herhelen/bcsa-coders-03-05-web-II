@@ -1,7 +1,6 @@
 package tech.ada.ecommerce.model;
 
 import jakarta.persistence.*;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import tech.ada.ecommerce.model.enums.StatusEnum;
 
 import java.math.BigDecimal;
@@ -41,6 +40,9 @@ public class Compra {
 
     @Enumerated(value = EnumType.STRING)
     private StatusEnum status;
+
+    @OneToOne
+    private FormaPagamento formaPagamento;
 
     public Compra() {
     }
@@ -115,6 +117,14 @@ public class Compra {
 
     public void setStatus(StatusEnum status) {
         this.status = status;
+    }
+
+    public FormaPagamento getFormaPagamento() {
+        return formaPagamento;
+    }
+
+    public void setFormaPagamento(FormaPagamento formaPagamento) {
+        this.formaPagamento = formaPagamento;
     }
 
     @Override
