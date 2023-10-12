@@ -1,4 +1,4 @@
-package tech.ada.ecommerce.model;
+package tech.ada.ecommerce.model.pagamento;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

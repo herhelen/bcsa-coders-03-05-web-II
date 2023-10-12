@@ -2,6 +2,7 @@ package tech.ada.ecommerce.model;
 
 import jakarta.persistence.*;
 import tech.ada.ecommerce.model.enums.StatusEnum;
+import tech.ada.ecommerce.model.pagamento.FormaPagamento;
 
 import java.math.BigDecimal;
 import java.util.Date;

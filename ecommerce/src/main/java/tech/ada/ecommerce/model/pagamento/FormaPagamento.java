@@ -1,6 +1,7 @@
-package tech.ada.ecommerce.model;
+package tech.ada.ecommerce.model.pagamento;
 
 import jakarta.persistence.*;
+import tech.ada.ecommerce.model.Compra;
 
 import java.util.Objects;
 
