@@ -40,6 +40,13 @@ public class Cliente implements Serializable {
     @OneToMany
     private List<Compra> compras;
 
+    @Column(nullable = false)
+    private boolean ativo;
+
+    @Column(nullable = false)
+    private Date dataAtivacao;
+
+
     public Cliente() {
     }
 
