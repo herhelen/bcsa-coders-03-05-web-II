@@ -46,6 +46,9 @@ public class Cliente implements Serializable {
     @Column
     private Date dataDesativacao;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
+    private List<ClienteEndereco> enderecos;
+
     public Cliente() {
     }
 
@@ -139,6 +142,14 @@ public class Cliente implements Serializable {
 
     public void setDataDesativacao(Date dataDesativacao) {
         this.dataDesativacao = dataDesativacao;
+    }
+
+    public List<ClienteEndereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<ClienteEndereco> enderecos) {
+        this.enderecos = enderecos;
     }
 
     @Override
