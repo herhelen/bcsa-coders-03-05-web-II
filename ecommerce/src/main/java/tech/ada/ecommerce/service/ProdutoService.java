@@ -19,6 +19,14 @@ public class ProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
+    public Produto buscarProdutoPorSku(String sku) {
+        return this.produtoRepository.findProdutoBySku(sku);
+    }
+
+    public List<Produto> buscarProdutosPorNome(String nome) {
+        return this.produtoRepository.findProdutosByNomeIsLikeIgnoreCase(nome);
+    }
+
     public List<Produto> buscarProdutosPorPrecos(BigDecimal precoMenor, BigDecimal precoMaior) {
         return this.produtoRepository.findProdutosByPrecoBetween(precoMenor, precoMaior);
     }
