@@ -27,8 +27,8 @@ public class ClienteController {
     }
 
     @GetMapping("/nome")
-    public ResponseEntity<List<Cliente>> getClienteByNome(@RequestParam("nome") String nome) {
-        return new ResponseEntity<>(this.clienteService.buscarPorNomeCustom(nome), HttpStatus.OK);
+    public ResponseEntity<List<Cliente>> getClientesByNome(@RequestParam("nome") String nome) {
+        return new ResponseEntity<>(this.clienteService.buscarPorNome(nome), HttpStatus.OK);
     }
 
     @GetMapping("/todos")

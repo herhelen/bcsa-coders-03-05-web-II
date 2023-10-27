@@ -43,10 +43,16 @@ public class ClienteService {
     }
 
     public List<Cliente> buscarPorNome(String nome) {
-        return this.clienteRepository.findByNomeCompleto(nome);
+//        return this.clienteRepository.findByNomeCompleto(nome);
+        return this.clienteRepository.findByNomeCompletoLike("%" + nome + "%");
     }
 
     public List<Cliente> buscarPorNomeCustom(String nome) {
         return this.clienteRepository.findByNomeCompletoCustom(nome);
     }
+
+    public void ativarDesativarCliente(boolean ativo, Long id) {
+        this.clienteRepository.ativarUsuario(ativo, id);
+    }
+
 }

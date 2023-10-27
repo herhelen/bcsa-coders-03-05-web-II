@@ -28,4 +28,10 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     @Query(value = "SELECT * FROM cliente ORDER BY NOME_COMPLETO", nativeQuery = true)
     Page<Cliente> findAllCustom(Pageable pageable);
+
+    @Query("UPDATE Cliente c SET c.ativo = :ativo WHERE c.id = :id")
+    void ativarUsuario(@Param("ativo") boolean ativo, @Param("id") Long id);
+
+    @Query(value = "UPDATE cliente SET ativo = :ativo WHERE id = :id", nativeQuery = true)
+    void ativarUsuario2(@Param("ativo") boolean ativo, @Param("id") Long id);
 }
