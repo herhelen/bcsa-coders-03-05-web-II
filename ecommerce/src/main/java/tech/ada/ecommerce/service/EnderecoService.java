@@ -2,14 +2,20 @@ package tech.ada.ecommerce.service;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import tech.ada.ecommerce.dto.CEP;
+import tech.ada.ecommerce.model.Endereco;
+import tech.ada.ecommerce.repository.EnderecoRepository;
 
 @Service
 public class EnderecoService {
+
+    private EnderecoRepository enderecoRepository;
+
+    public EnderecoService(EnderecoRepository enderecoRepository) {
+        this.enderecoRepository = enderecoRepository;
+    }
 
     // Implementação usando RestTemplate
 //    public CEP buscaPorCep(String cep) {
@@ -33,6 +39,15 @@ public class EnderecoService {
                 .retrieve() // fazer a chamada e retorna response
                 .bodyToMono(CEP.class) // mono => sincrono
                 .block(); // classe de resposta
+    }
+
+    public Endereco saveEndereco(Endereco endereco) {
+        CEP cep = buscaPorCep(endereco.getCep());
+        endereco.setUf(cep.getUf());
+        endereco.setCidade(cep.getLocalidade());
+        endereco.setBairro(cep.getBairro());
+        endereco.setLogradouro(cep.getLogradouro());
+        return this.enderecoRepository.save(endereco);
     }
 
 }

@@ -36,8 +36,7 @@ public class Cliente implements Serializable {
     @Column(nullable = false)
     private String senha;
 
-//    @OneToMany(fetch = FetchType.LAZY)
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente")
     private List<Compra> compras;
 
     @Column(nullable = false)

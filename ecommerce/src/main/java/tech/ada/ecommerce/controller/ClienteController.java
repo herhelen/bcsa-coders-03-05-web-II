@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.ada.ecommerce.dto.ClienteDTO;
+import tech.ada.ecommerce.dto.ClienteEnderecoDTO;
 import tech.ada.ecommerce.model.Cliente;
 import tech.ada.ecommerce.service.ClienteService;
 
@@ -94,5 +95,11 @@ public class ClienteController {
 //            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //    }
+
+    @PutMapping("/endereco")
+    public ResponseEntity<String> adicionarEndereco(@RequestBody ClienteEnderecoDTO clienteEndereco) {
+        this.clienteService.adicionarEndereco(clienteEndereco);
+        return new ResponseEntity<>("Endereco adicionado com sucesso", HttpStatus.OK);
+    }
 }
 

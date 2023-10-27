@@ -6,9 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import tech.ada.ecommerce.dto.ClienteDTO;
+import tech.ada.ecommerce.dto.ClienteEnderecoDTO;
 import tech.ada.ecommerce.model.Cliente;
+import tech.ada.ecommerce.model.ClienteEndereco;
+import tech.ada.ecommerce.model.Endereco;
+import tech.ada.ecommerce.repository.ClienteEnderecoRepository;
 import tech.ada.ecommerce.repository.ClienteQDSLRepository;
 import tech.ada.ecommerce.repository.ClienteRepository;
+import tech.ada.ecommerce.repository.EnderecoRepository;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -21,13 +26,19 @@ import java.util.Optional;
 public class ClienteService {
 
     //@Autowired
-    ClienteRepository clienteRepository;
-    ClienteQDSLRepository clienteQDSLRepository;
+    private ClienteRepository clienteRepository;
+    private ClienteQDSLRepository clienteQDSLRepository;
+    private ClienteEnderecoRepository clienteEnderecoRepository;
+    private EnderecoRepository enderecoRepository;
 
-    public ClienteService(ClienteRepository clienteRepository, ClienteQDSLRepository clienteQDSLRepository) {
+    public ClienteService(ClienteRepository clienteRepository, ClienteQDSLRepository clienteQDSLRepository,
+                          ClienteEnderecoRepository clienteEnderecoRepository, EnderecoRepository enderecoRepository) {
         this.clienteRepository = clienteRepository;
         this.clienteQDSLRepository = clienteQDSLRepository;
+        this.clienteEnderecoRepository = clienteEnderecoRepository;
+        this.enderecoRepository = enderecoRepository;
     }
+
 
     public List<Cliente> buscarTodosClientes() {
         List<Cliente> clientes = this.clienteRepository.findAll();
@@ -116,6 +127,19 @@ public class ClienteService {
 
     public void excluirCliente(Long idCliente) {
         this.clienteRepository.deleteById(idCliente);
+    }
+
+    public void adicionarEndereco(ClienteEnderecoDTO clienteEnderecoDTO) {
+        Optional<Cliente> optionalCliente = this.clienteRepository.findById(clienteEnderecoDTO.getClienteId());
+        Cliente cliente = optionalCliente.orElseThrow(() -> new RuntimeException("Não existe cliente com esse id"));
+        Optional<Endereco> optionalEndereco = this.enderecoRepository.findById(clienteEnderecoDTO.getEnderecoId());
+        Endereco endereco = optionalEndereco.orElseThrow(() -> new RuntimeException("Não existe endereco com esse id"));
+        ClienteEndereco clienteEndereco = new ClienteEndereco();
+        clienteEndereco.setEndereco(endereco);
+        clienteEndereco.setCliente(cliente);
+        clienteEndereco.setTipo(clienteEnderecoDTO.getTipo());
+        clienteEndereco.setNomeRecebedor(clienteEnderecoDTO.getNomeRecebedor());
+        this.clienteEnderecoRepository.save(clienteEndereco);
     }
 
 

@@ -36,7 +36,7 @@ public class Compra {
 
 //    @OneToMany(fetch = FetchType.EAGER)
 //    @OneToMany(fetch = FetchType.LAZY)
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "compra")
     private List<ItemProduto> itens;
 
     @Enumerated(value = EnumType.STRING)
