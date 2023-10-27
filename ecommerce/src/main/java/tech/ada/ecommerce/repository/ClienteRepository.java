@@ -1,8 +1,10 @@
 package tech.ada.ecommerce.repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +14,10 @@ import java.util.Date;
 import java.util.List;
 
 @Repository
+@Transactional
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
+
+    List<Cliente> findByAtivo(boolean ativo);
 
     List<Cliente> findByNomeCompleto(String nome);
 
@@ -29,6 +34,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     @Query(value = "SELECT * FROM cliente ORDER BY NOME_COMPLETO", nativeQuery = true)
     Page<Cliente> findAllCustom(Pageable pageable);
 
+    @Modifying
     @Query("UPDATE Cliente c SET c.ativo = :ativo WHERE c.id = :id")
     void ativarUsuario(@Param("ativo") boolean ativo, @Param("id") Long id);
 

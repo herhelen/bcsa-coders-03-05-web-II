@@ -6,6 +6,7 @@ import tech.ada.ecommerce.model.Compra;
 import java.util.Objects;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class FormaPagamento {
 
     @Id

@@ -43,9 +43,27 @@ public class ClienteService {
         try {
             DateFormat dft = new SimpleDateFormat("dd/MM/yyyy");
             Date dataNascimento = dft.parse(clienteDTO.getDataNascimento());
-            Cliente cliente = new Cliente(clienteDTO.getNomeCompleto(),
-                    dataNascimento, clienteDTO.getCpf(), clienteDTO.getEmail(), clienteDTO.getSenha(),
+
+            Cliente cliente;
+            if(clienteDTO.getId() != null) {
+                cliente = new Cliente(
+                    clienteDTO.getId(),
+                    clienteDTO.getNomeCompleto(),
+                    dataNascimento,
+                    clienteDTO.getCpf(),
+                    clienteDTO.getEmail(),
+                    clienteDTO.getSenha(),
                     clienteDTO.isAtivo());
+            } else {
+                cliente = new Cliente(
+                        clienteDTO.getNomeCompleto(),
+                        dataNascimento,
+                        clienteDTO.getCpf(),
+                        clienteDTO.getEmail(),
+                        clienteDTO.getSenha(),
+                        clienteDTO.isAtivo());
+            }
+
             Cliente savedCliente = this.clienteRepository.save(cliente);
 
             return criarClienteDTO(savedCliente);
@@ -73,6 +91,10 @@ public class ClienteService {
 
     public void ativarDesativarCliente(boolean ativo, Long id) {
         this.clienteRepository.ativarUsuario(ativo, id);
+    }
+
+    public List<Cliente> buscarClientesAtivos() {
+        return this.clienteRepository.findByAtivo(true);
     }
 
 
