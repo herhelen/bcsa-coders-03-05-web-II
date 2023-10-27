@@ -43,11 +43,20 @@ public class Cliente implements Serializable {
     @Column(nullable = false)
     private boolean ativo;
 
-    @Column(nullable = false)
-    private Date dataAtivacao;
-
+    @Column
+    private Date dataDesativacao;
 
     public Cliente() {
+    }
+
+    public Cliente(String nomeCompleto, Date dataNascimento, String cpf, String email, String senha,
+                   boolean ativo) {
+        this.nomeCompleto = nomeCompleto;
+        this.dataNascimento = dataNascimento;
+        this.cpf = cpf;
+        this.email = email;
+        this.senha = senha;
+        this.ativo = ativo;
     }
 
     public Long getId() {
@@ -104,6 +113,22 @@ public class Cliente implements Serializable {
 
     public void setCompras(List<Compra> compras) {
         this.compras = compras;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    public Date getDataDesativacao() {
+        return dataDesativacao;
+    }
+
+    public void setDataDesativacao(Date dataDesativacao) {
+        this.dataDesativacao = dataDesativacao;
     }
 
     @Override

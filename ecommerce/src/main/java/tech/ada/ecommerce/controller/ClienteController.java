@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tech.ada.ecommerce.dto.ClienteDTO;
 import tech.ada.ecommerce.model.Cliente;
 import tech.ada.ecommerce.service.ClienteService;
 
@@ -40,16 +41,30 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> getClienteById(@PathVariable("id") Long idCliente) {
+    public ResponseEntity<ClienteDTO> getClienteById(@PathVariable("id") Long idCliente) {
         return new ResponseEntity<>(this.clienteService.buscarPorId(idCliente), HttpStatus.OK);
     }
 
 
     @PostMapping("")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Cliente saveCliente(@RequestBody Cliente cliente) {
-//    public ResponseEntity<Cliente> saveCliente(@RequestBody Cliente cliente) {
-        Cliente savedCliente = this.clienteService.criarCliente(cliente);
-        return savedCliente;
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public Cliente saveCliente(@RequestBody Cliente cliente) {
+    public ResponseEntity<ClienteDTO> saveCliente(@RequestBody ClienteDTO cliente) {
+//        Cliente savedCliente = this.clienteService.criarCliente(cliente);
+//        return savedCliente;
+        try {
+            ClienteDTO savedCliente = this.clienteService.criarCliente(cliente);
+            if(savedCliente != null)
+                return new ResponseEntity<>(savedCliente, HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (Exception exception) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteClienteById(@PathVariable("id") Long idCliente) {
+        this.clienteService.excluirCliente(idCliente);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

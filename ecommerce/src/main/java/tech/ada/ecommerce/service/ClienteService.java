@@ -5,9 +5,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import tech.ada.ecommerce.dto.ClienteDTO;
 import tech.ada.ecommerce.model.Cliente;
 import tech.ada.ecommerce.repository.ClienteRepository;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,13 +39,27 @@ public class ClienteService {
         return clientes;
     }
 
-    public Cliente criarCliente(Cliente cliente) {
-        return this.clienteRepository.save(cliente);
+    public ClienteDTO criarCliente(ClienteDTO clienteDTO) {
+        try {
+            DateFormat dft = new SimpleDateFormat("dd/MM/yyyy");
+            Date dataNascimento = dft.parse(clienteDTO.getDataNascimento());
+            Cliente cliente = new Cliente(clienteDTO.getNomeCompleto(),
+                    dataNascimento, clienteDTO.getCpf(), clienteDTO.getEmail(), clienteDTO.getSenha(),
+                    clienteDTO.isAtivo());
+            Cliente savedCliente = this.clienteRepository.save(cliente);
+
+            return criarClienteDTO(savedCliente);
+
+        } catch(ParseException exception) {
+            return null;
+        }
     }
 
-    public Cliente buscarPorId(Long id) {
+    public ClienteDTO buscarPorId(Long id) {
         Optional<Cliente> opCliente = this.clienteRepository.findById(id);
-        return opCliente.orElseThrow(() -> new RuntimeException("Não existe cliente com id " + id));
+        Cliente cliente = opCliente.orElseThrow(() -> new RuntimeException("Não existe cliente com id " + id));
+
+        return criarClienteDTO(cliente);
     }
 
     public List<Cliente> buscarPorNome(String nome) {
@@ -55,4 +75,22 @@ public class ClienteService {
         this.clienteRepository.ativarUsuario(ativo, id);
     }
 
+
+    private ClienteDTO criarClienteDTO(Cliente cliente) {
+        DateFormat dft = new SimpleDateFormat("dd/MM/yyyy");
+        String sDataNascimento = dft.format(cliente.getDataNascimento());
+
+        return ClienteDTO.builder()
+                .id(cliente.getId())
+                .nomeCompleto(cliente.getNomeCompleto())
+                .cpf(cliente.getCpf())
+                .dataNascimento(sDataNascimento)
+                .email(cliente.getEmail())
+                .senha(cliente.getSenha())
+                .ativo(cliente.isAtivo()).build();
+    }
+
+    public void excluirCliente(Long idCliente) {
+        this.clienteRepository.deleteById(idCliente);
+    }
 }
