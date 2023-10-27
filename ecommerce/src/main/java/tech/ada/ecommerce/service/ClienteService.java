@@ -7,12 +7,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import tech.ada.ecommerce.dto.ClienteDTO;
 import tech.ada.ecommerce.model.Cliente;
+import tech.ada.ecommerce.repository.ClienteQDSLRepository;
 import tech.ada.ecommerce.repository.ClienteRepository;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +22,11 @@ public class ClienteService {
 
     //@Autowired
     ClienteRepository clienteRepository;
+    ClienteQDSLRepository clienteQDSLRepository;
 
-    public ClienteService(ClienteRepository clienteRepository) {
+    public ClienteService(ClienteRepository clienteRepository, ClienteQDSLRepository clienteQDSLRepository) {
         this.clienteRepository = clienteRepository;
+        this.clienteQDSLRepository = clienteQDSLRepository;
     }
 
     public List<Cliente> buscarTodosClientes() {
@@ -115,4 +117,19 @@ public class ClienteService {
     public void excluirCliente(Long idCliente) {
         this.clienteRepository.deleteById(idCliente);
     }
+
+
+    // QDSL
+    public List<Cliente> qdslFindAll() {
+        return this.clienteQDSLRepository.findAll();
+    }
+
+    public Cliente qdslFindById(Long id) {
+        return this.clienteQDSLRepository.findById(id);
+    }
+
+    public List<Cliente> qdslFindByNome(String nome) {
+        return this.clienteQDSLRepository.findByNome(nome);
+    }
+
 }
